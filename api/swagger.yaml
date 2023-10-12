@@ -20,7 +20,7 @@ components:
         id: 1000
         nombre: Programación
   
-    Alumno:
+    Alumnos:
       type: object
       required:
         - nombre
@@ -166,7 +166,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Alumno' 
+                  $ref: '#/components/schemas/Alumnos' 
     post:
       tags: [Alumnos]
       summary: Agrega un alumno.
@@ -298,7 +298,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Materia' 
+                  $ref: '#/components/schemas/Materias' 
     post:
       tags: [Materias]
       summary: Agrega una materia.
@@ -430,7 +430,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Carrera' 
+                  $ref: '#/components/schemas/Carreras' 
     post:
       tags: [Carreras]
       summary: Agrega una Carrera.
@@ -558,7 +558,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Inscripcion' 
+                  $ref: '#/components/schemas/Inscripciones' 
     post:
       tags: [Inscripciones]
       summary: Agrega una Inscripcion.

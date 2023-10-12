@@ -4,95 +4,8 @@ var models = require("../models");
 const dotenv = require('dotenv');
 const jwt  = require('jsonwebtoken');
 
-/**
- * @swagger
- * components:
- *   schemas:
- *     Alumno:
- *       type: object
- *       required:
- *         - nombre
- *         - apellido
- *       properties:
- *         id:
- *           type: string
- *           description: El id auto generado del alumno
- *         nombre:
- *           type: string
- *           description: El nombre del alumno
- *         apellido:
- *           type: string
- *           description: El apellido del alumno
- *       example:
- *         id: 1000
- *         nombre: Juan
- *         apellido: Perez
- */
 
-/**
-  * @swagger
-  * tags:
-  *   name: Alumnos
-  *   description: Manejo Alumnos API
-  */
-
-/**
- * @swagger
- * /alu:
- *   get:
- *     tags: [Alumnos]
- *     summary: Retorna la lista de todos los alumnos
- *     parameters:
- *       - in: query
- *         name: offset
- *         schema:
- *           type: integer
- *         required: true
- *       - in: query
- *         name: limit
- *         schema:
- *           type: integer
- *         required: true       
- *     responses:
- *       200:
- *         description: Lista de alumnos
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Alumno'
- *                  
- */
-
-/**
- * @swagger
- * /alu:
- *   post:
- *     tags: [Alumnos]
- *     summary: Retorna la lista de todos los alumnos
- *     parameters:
- *       - in: query
- *         name: offset
- *         schema:
- *           type: integer
- *         required: true
- *       - in: query
- *         name: limit
- *         schema:
- *           type: integer
- *         required: true       
- *     responses:
- *       200:
- *         description: Lista de alumnos
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Alumno'
- *                  
- */
+/*
 router.post("/generarToken", (req,res) => {
     let jwtSecretKey = process.env.JWT_SECRET_KEY;
     let data = {
@@ -120,13 +33,14 @@ router.get("/validarToken", (req,res) => {
     }
 
 });
+*/
 
 router.get("/", (req, res) => {
     let jwtSecretKey = process.env.JWT_SECRET_KEY;
     let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
 
-    const cantAVer = parseInt(req.query.cantAVer) || 10;
-    const paginaActual = parseInt(req.query.paginaActual) || 1;
+    const cantAVer = parseInt(req.query.cantAVer);
+    const paginaActual = parseInt(req.query.paginaActual) ;
     
     const token = req.header(tokenHeaderKey);
     const verified = jwt.verify(token, jwtSecretKey);
@@ -156,7 +70,7 @@ router.post('/', (req, res) => {
       
     const token = req.header(tokenHeaderKey);
     const verified = jwt.verify(token, jwtSecretKey);
-    
+    console.log(req.body)
     try {
         if (verified) {
             models.alumno
@@ -216,44 +130,76 @@ router.get('/:id', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-    const {id_alumno, id_materia} = req.body;
+    const {nombre, apellido} = req.body;
     const update = {} ;
-    if(id_alumno) update.id_alumno = id_alumno ;
-    if(id_materia) update.id_materia = id_materia ;
-    const onSuccess = (alumno) =>
-        alumno
-        .update(update)
-        .then(() => res.sendStatus(200))
-        .catch((error) => {
-            if (error === 'SequelizeUniqueConstraintError: Validation error') {
-            res
-                .status(400)
-                .send('Bad request: existe otra inscipcion con el mismo Alumno y Materia');
-            } else {
-            console.log(
-                `Error al intentar actualizar la base de datos: ${error}`,
-            );
-            res.sendStatus(500);
-        }
+    if(nombre) update.nombre = nombre ;
+    if(apellido) update.apellido = apellido ;
+    
+    let jwtSecretKey = process.env.JWT_SECRET_KEY;
+    let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
+
+    const token = req.header(tokenHeaderKey);
+    const verified = jwt.verify(token, jwtSecretKey);
+    try {
+        if (verified) {
+            const onSuccess = (alumno) =>
+            alumno
+            .update(update)
+            .then(() => res.sendStatus(200))
+            .catch((error) => {
+                if (error === 'SequelizeUniqueConstraintError: Validation error') {
+                res
+                    .status(400)
+                    .send('Bad request: existe otra inscipcion con el mismo Alumno y Materia');
+                } else {
+                console.log(
+                    `Error al intentar actualizar la base de datos: ${error}`,
+                );
+                res.sendStatus(500);
+            }
     });
     findAlumno(req.params.id, {
         onSuccess,
         onNotFound: () => res.sendStatus(404),
         onError: () => res.sendStatus(500),
     });
+        }else {
+            return res.status(401).send(error);
+        }
+    } catch (error){
+        return res.status(401).send(error);
+    }
+    
+    
 });
 
 router.delete('/:id', (req, res) => {
-    const onSuccess = (alumno) =>
-        alumno
-        .destroy()
-        .then(() => res.sendStatus(200))
-        .catch(() => res.sendStatus(500));
-    findAlumno(req.params.id, {
-        onSuccess,
-        onNotFound: () => res.sendStatus(404),
-        onError: () => res.sendStatus(500),
-    });
+    
+    let jwtSecretKey = process.env.JWT_SECRET_KEY;
+    let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
+
+    const token = req.header(tokenHeaderKey);
+    const verified = jwt.verify(token, jwtSecretKey);
+    try {
+        if (verified) {
+            const onSuccess = (alumno) =>
+            alumno
+            .destroy()
+            .then(() => res.sendStatus(200))
+            .catch(() => res.sendStatus(500));
+        findAlumno(req.params.id, {
+            onSuccess,
+            onNotFound: () => res.sendStatus(404),
+            onError: () => res.sendStatus(500),
+        });
+        }else {
+            return res.status(401).send(error);
+        }
+    } catch (error){
+        return res.status(401).send(error);
+    }
+    
+    
 });
 
 module.exports = router;

@@ -7,10 +7,14 @@ var carrerasRouter = require('./routes/carreras');
 var alumnosRouter = require('./routes/alumnos');
 var materiasRouter = require('./routes/materias');
 var inscripcionesRouter = require('./routes/inscripciones');
+var tokenRouter = require('./routes/token');
+
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
 const dotenv = require('dotenv');
 const jwt  = require('jsonwebtoken');
+const yaml = require('yamljs');
+
 
 var app = express();
 
@@ -26,45 +30,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//swagger 
+const swaggerDocument = yaml.load('./swagger.yaml');
 
-const options = {
-  definition: {
-    openapi: "3.1.0",
-    info: {
-      title: "LogRocket Express API with Swagger",
-      version: "0.1.0",
-      description:
-        "This is a simple CRUD API application made with Express and documented with Swagger",
-      license: {
-        name: "MIT",
-        url: "https://spdx.org/licenses/MIT.html",
-      },
-    },
-    servers: [
-      {
-        url: "http://localhost:3001",
-      },
-    ],
-  },
-  apis: ["./routes/*.js"],
-};
-
-const specs = swaggerJsDoc(options);
-
-app.use(
-  "/api-docs",
-  swaggerUI.serve,
-  swaggerUI.setup(specs)
-);
-
-
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 app.use('/car', carrerasRouter);
 app.use('/alu', alumnosRouter);
 app.use('/mat', materiasRouter);
 app.use('/ins', inscripcionesRouter);
-
+app.use('/token', tokenRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

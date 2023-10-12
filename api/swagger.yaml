@@ -1,0 +1,662 @@
+openapi: 3.1.0
+info:
+  title: API Swagger
+  version: 1.0.0
+
+components:
+  schemas:
+    Carreras:
+      type: object
+      required:
+        - nombre
+      properties:
+        id:
+          type: string
+          description: El id auto generado de la carrera
+        nombre:
+          type: string
+          description: El nombre de la carrera
+      example:
+        id: 1000
+        nombre: Programación
+  
+    Alumno:
+      type: object
+      required:
+        - nombre
+        - apellido
+      properties:
+        id:
+          type: string
+          description: El id auto generado del alumno
+        nombre:
+          type: string
+          description: El nombre del alumno
+        apellido:
+          type: string
+          description: El apellido del alumno
+      example:
+        id: 1000
+        nombre: Juan
+        apellido: Perez
+
+    Materias:
+      type: object
+      required:
+        - nombre
+        - id_carrera
+      properties:
+        id:
+          type: string
+          description: El id auto generado de la materia
+        nombre:
+          type: string
+          description: El nombre del alumno
+        id_carrera:
+          type: integer
+          description: El id de la carrera
+      example:
+        id: 1000
+        nombre: Matemática
+        id_carrera: 1
+
+    Inscripciones:
+      type: object
+      required:
+        - id_alumno
+        - id_materia
+      properties:
+        id:
+          type: string
+          description: El id auto generado de la inscripción
+        id_alumno:
+          type: integer
+          description: El id del alumno
+        id_materia:
+          type: integer
+          description: El id de la materia
+      example:
+        id: 1000
+        id_alumno: 1
+        id_materia: 1
+
+#tags
+tags:
+  name: Alumnos
+  description: Manejo Alumnos API
+
+tags:
+  name: Token
+  description: Manejo Token API
+
+tags:
+  name: Carreras
+  description: Manejo Carreras API
+
+tags:
+  name: Materias
+  description: Manejo Materias API
+
+tags: 
+  name: Inscripciones
+  description: Manejo Inscripciones API
+
+#paths
+paths:
+  /token/generarToken:
+    post:
+      tags: [Token]
+      summary: Genera un token JWT.
+      description: Genera un token JWT con datos específicos.
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Token JWT generado exitosamente.
+          schema:
+            type: string
+        500:
+          description: Error al generar el token JWT.
+   
+  /token/validarToken:
+    get:
+      tags: [Token]
+      summary: Verifica un token JWT.
+      description: Verifica si un token JWT es válido.
+      parameters:
+        - in: header
+          default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE2OTcwNjMzOTZ9.IaqFEdDf6ITzbuq09h1Riile3pGAl3vnlbrA98WrPv4
+          name: token_key
+          description: El token JWT a verificar
+          required: true
+          type: string
+        
+      responses:
+        200:
+          description: Token válido
+        401:
+          description: Token no válido
+  #Alumnos
+  /alu:
+    get:
+      tags: [Alumnos]
+      summary: Retorna la lista de todos los alumnos.
+      parameters:
+        - in: header
+          default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE2OTcwNjMzOTZ9.IaqFEdDf6ITzbuq09h1Riile3pGAl3vnlbrA98WrPv4
+          name: token_key
+          description: El token JWT a verificar
+          required: true
+          type: string
+        - in: query
+          name: cantAVer
+          schema:
+            type: integer
+          required: true
+        - in: query
+          name: paginaActual
+          schema:
+            type: integer
+          required: true       
+      responses:
+        200:
+          description: Lista de alumnos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Alumno' 
+    post:
+      tags: [Alumnos]
+      summary: Agrega un alumno.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                apellido:
+                  type: string
+      parameters:
+      - in: header
+        default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE2OTcwNjMzOTZ9.IaqFEdDf6ITzbuq09h1Riile3pGAl3vnlbrA98WrPv4
+        name: token_key
+        description: El token JWT a verificar
+        required: true
+        type: string            
+      responses:
+        '200':
+          description: Solicitud exitosa
+        '400':
+          description: Error en la solicitud
+  /alu/{id}:
+    put:
+      tags: [Alumnos]
+      summary: Modifica un alumno según id.
+      parameters:
+        - in: header
+          default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE2OTcwNjMzOTZ9.IaqFEdDf6ITzbuq09h1Riile3pGAl3vnlbrA98WrPv4
+          name: token_key
+          description: El token JWT a verificar
+          required: true
+          type: string 
+        - name: id
+          in: path
+          description: ID del recurso a actualizar
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                apellido:
+                  type: string
+      responses:
+        '200':
+          description: Solicitud exitosa
+        '400':
+          description: Error en la solicitud
+    get:
+      tags: [Alumnos]
+      summary: Retorna un alumno según id.
+      parameters:
+        - in: header
+          default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE2OTcwNjMzOTZ9.IaqFEdDf6ITzbuq09h1Riile3pGAl3vnlbrA98WrPv4
+          name: token_key
+          description: El token JWT a verificar
+          required: true
+          type: string       
+        - name: id
+          in: path
+          description: ID del recurso a actualizar
+          required: true
+          schema:
+            type: integer   
+      responses:
+        '200':
+          description: Solicitud exitosa
+        '400':
+          description: Error en la solicitud
+    delete:
+      tags: [Alumnos]
+      summary: Borra un alumno
+      parameters:
+        - in: header
+          default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE2OTcwNjMzOTZ9.IaqFEdDf6ITzbuq09h1Riile3pGAl3vnlbrA98WrPv4
+          name: token_key
+          description: El token JWT a verificar
+          required: true
+          type: string 
+        - name: id
+          in: path
+          description: ID del recurso a actualizar
+          required: true
+          schema:
+            type: integer    
+      responses:
+        '200':
+          description: Solicitud exitosa
+        '400':
+          description: Error en la solicitud
+  #Materias
+  /mat:
+    get:
+      tags: [Materias]
+      summary: Retorna la lista de todos las materias.
+      parameters:
+        - in: header
+          default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE2OTcwNjMzOTZ9.IaqFEdDf6ITzbuq09h1Riile3pGAl3vnlbrA98WrPv4
+          name: token_key
+          description: El token JWT a verificar
+          required: true
+          type: string
+        - in: query
+          name: cantAVer
+          schema:
+            type: integer
+          required: true
+        - in: query
+          name: paginaActual
+          schema:
+            type: integer
+          required: true       
+      responses:
+        200:
+          description: Lista de materias
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Materia' 
+    post:
+      tags: [Materias]
+      summary: Agrega una materia.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                id_carrera:
+                  type: integer
+      parameters:
+      - in: header
+        default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE2OTcwNjMzOTZ9.IaqFEdDf6ITzbuq09h1Riile3pGAl3vnlbrA98WrPv4
+        name: token_key
+        description: El token JWT a verificar
+        required: true
+        type: string            
+      responses:
+        '200':
+          description: Solicitud exitosa
+        '400':
+          description: Error en la solicitud
+  /mat/{id}:
+    put:
+      tags: [Materias]
+      summary: Modifica una materia según id.
+      parameters:
+        - in: header
+          default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE2OTcwNjMzOTZ9.IaqFEdDf6ITzbuq09h1Riile3pGAl3vnlbrA98WrPv4
+          name: token_key
+          description: El token JWT a verificar
+          required: true
+          type: string 
+        - name: id
+          in: path
+          description: ID del recurso a actualizar
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                id_carrera:
+                  type: integer
+      responses:
+        '200':
+          description: Solicitud exitosa
+        '400':
+          description: Error en la solicitud
+    get:
+      tags: [Materias]
+      summary: Retorna una materia según id.
+      parameters:
+        - in: header
+          default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE2OTcwNjMzOTZ9.IaqFEdDf6ITzbuq09h1Riile3pGAl3vnlbrA98WrPv4
+          name: token_key
+          description: El token JWT a verificar
+          required: true
+          type: string       
+        - name: id
+          in: path
+          description: ID del recurso a actualizar
+          required: true
+          schema:
+            type: integer   
+      responses:
+        '200':
+          description: Solicitud exitosa
+        '400':
+          description: Error en la solicitud
+    delete:
+      tags: [Materias]
+      summary: Borra una Materia
+      parameters:
+        - in: header
+          default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE2OTcwNjMzOTZ9.IaqFEdDf6ITzbuq09h1Riile3pGAl3vnlbrA98WrPv4
+          name: token_key
+          description: El token JWT a verificar
+          required: true
+          type: string 
+        - name: id
+          in: path
+          description: ID del recurso a actualizar
+          required: true
+          schema:
+            type: integer    
+      responses:
+        '200':
+          description: Solicitud exitosa
+        '400':
+          description: Error en la solicitud
+  #Carreras
+  /car:
+    get:
+      tags: [Carreras]
+      summary: Retorna la lista de todos las carreras.
+      parameters:
+        - in: header
+          default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE2OTcwNjMzOTZ9.IaqFEdDf6ITzbuq09h1Riile3pGAl3vnlbrA98WrPv4
+          name: token_key
+          description: El token JWT a verificar
+          required: true
+          type: string
+        - in: query
+          name: cantAVer
+          schema:
+            type: integer
+          required: true
+        - in: query
+          name: paginaActual
+          schema:
+            type: integer
+          required: true       
+      responses:
+        200:
+          description: Lista de carreras
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Carrera' 
+    post:
+      tags: [Carreras]
+      summary: Agrega una Carrera.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+      parameters:
+      - in: header
+        default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE2OTcwNjMzOTZ9.IaqFEdDf6ITzbuq09h1Riile3pGAl3vnlbrA98WrPv4
+        name: token_key
+        description: El token JWT a verificar
+        required: true
+        type: string            
+      responses:
+        '200':
+          description: Solicitud exitosa
+        '400':
+          description: Error en la solicitud
+  /car/{id}:
+    put:
+      tags: [Carreras]
+      summary: Modifica una Carrera según id.
+      parameters:
+        - in: header
+          default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE2OTcwNjMzOTZ9.IaqFEdDf6ITzbuq09h1Riile3pGAl3vnlbrA98WrPv4
+          name: token_key
+          description: El token JWT a verificar
+          required: true
+          type: string 
+        - name: id
+          in: path
+          description: ID del recurso a actualizar
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+      responses:
+        '200':
+          description: Solicitud exitosa
+        '400':
+          description: Error en la solicitud
+    get:
+      tags: [Carreras]
+      summary: Retorna una Carrera según id.
+      parameters:
+        - in: header
+          default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE2OTcwNjMzOTZ9.IaqFEdDf6ITzbuq09h1Riile3pGAl3vnlbrA98WrPv4
+          name: token_key
+          description: El token JWT a verificar
+          required: true
+          type: string       
+        - name: id
+          in: path
+          description: ID del recurso a actualizar
+          required: true
+          schema:
+            type: integer   
+      responses:
+        '200':
+          description: Solicitud exitosa
+        '400':
+          description: Error en la solicitud
+    delete:
+      tags: [Carreras]
+      summary: Borra una Carrera
+      parameters:
+        - in: header
+          default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE2OTcwNjMzOTZ9.IaqFEdDf6ITzbuq09h1Riile3pGAl3vnlbrA98WrPv4
+          name: token_key
+          description: El token JWT a verificar
+          required: true
+          type: string 
+        - name: id
+          in: path
+          description: ID del recurso a actualizar
+          required: true
+          schema:
+            type: integer    
+      responses:
+        '200':
+          description: Solicitud exitosa
+        '400':
+          description: Error en la solicitud
+  #Inscripciones
+  /ins:
+    get:
+      tags: [Inscripciones]
+      summary: Retorna la lista de todos las inscripciones.
+      parameters:
+        - in: header
+          default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE2OTcwNjMzOTZ9.IaqFEdDf6ITzbuq09h1Riile3pGAl3vnlbrA98WrPv4
+          name: token_key
+          description: El token JWT a verificar
+          required: true
+          type: string
+        - in: query
+          name: cantAVer
+          schema:
+            type: integer
+          required: true
+        - in: query
+          name: paginaActual
+          schema:
+            type: integer
+          required: true       
+      responses:
+        200:
+          description: Lista de Inscripciones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Inscripcion' 
+    post:
+      tags: [Inscripciones]
+      summary: Agrega una Inscripcion.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_alumno:
+                  type: integer
+                id_materia:
+                  type: integer
+      parameters:
+      - in: header
+        default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE2OTcwNjMzOTZ9.IaqFEdDf6ITzbuq09h1Riile3pGAl3vnlbrA98WrPv4
+        name: token_key
+        description: El token JWT a verificar
+        required: true
+        type: string            
+      responses:
+        '200':
+          description: Solicitud exitosa
+        '400':
+          description: Error en la solicitud
+  /ins/{id}:
+    put:
+      tags: [Inscripciones]
+      summary: Modifica una Inscripción según id.
+      parameters:
+        - in: header
+          default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE2OTcwNjMzOTZ9.IaqFEdDf6ITzbuq09h1Riile3pGAl3vnlbrA98WrPv4
+          name: token_key
+          description: El token JWT a verificar
+          required: true
+          type: string 
+        - name: id
+          in: path
+          description: ID del recurso a actualizar
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_alumno:
+                  type: integer
+                id_materia:
+                  type: integer
+      responses:
+        '200':
+          description: Solicitud exitosa
+        '400':
+          description: Error en la solicitud
+    get:
+      tags: [Inscripciones]
+      summary: Retorna una Inscripción según id.
+      parameters:
+        - in: header
+          default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE2OTcwNjMzOTZ9.IaqFEdDf6ITzbuq09h1Riile3pGAl3vnlbrA98WrPv4
+          name: token_key
+          description: El token JWT a verificar
+          required: true
+          type: string       
+        - name: id
+          in: path
+          description: ID del recurso a actualizar
+          required: true
+          schema:
+            type: integer   
+      responses:
+        '200':
+          description: Solicitud exitosa
+        '400':
+          description: Error en la solicitud
+    delete:
+      tags: [Inscripciones]
+      summary: Borra una Inscripción
+      parameters:
+        - in: header
+          default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE2OTcwNjMzOTZ9.IaqFEdDf6ITzbuq09h1Riile3pGAl3vnlbrA98WrPv4
+          name: token_key
+          description: El token JWT a verificar
+          required: true
+          type: string 
+        - name: id
+          in: path
+          description: ID del recurso a actualizar
+          required: true
+          schema:
+            type: integer    
+      responses:
+        '200':
+          description: Solicitud exitosa
+        '400':
+          description: Error en la solicitud

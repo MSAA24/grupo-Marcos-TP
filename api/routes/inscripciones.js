@@ -1,6 +1,8 @@
 var express = require("express");
 var router = express.Router();
 var models = require("../models");
+const dotenv = require('dotenv');
+const jwt  = require('jsonwebtoken');
 
 router.get("/", (req, res,next) => {
   const cantAVer = parseInt(req.query.cantAVer) || 10;

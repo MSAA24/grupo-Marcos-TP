@@ -1,0 +1,2 @@
+GET /alu?cantAVer=123&paginaActual=1 500 1288 - 340.917 ms Mon, 16 Oct 2023 01:07:17 GMT -
+GET /alu?cantAVer=12&paginaActual=1 500 1288 - 361.805 ms Mon, 16 Oct 2023 01:08:35 GMT -

@@ -2,19 +2,25 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+const fs = require('fs');
+//logger
 var logger = require('morgan');
+
+//routes
 var carrerasRouter = require('./routes/carreras');
 var alumnosRouter = require('./routes/alumnos');
 var materiasRouter = require('./routes/materias');
 var inscripcionesRouter = require('./routes/inscripciones');
 var tokenRouter = require('./routes/token');
 
+//swagger
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
 const dotenv = require('dotenv');
-const jwt  = require('jsonwebtoken');
 const yaml = require('yamljs');
 
+//jwt
+const jwt  = require('jsonwebtoken');
 
 var app = express();
 
@@ -24,13 +30,30 @@ dotenv.config();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-app.use(logger('dev'));
+//morgan
+/*
+app.use(logger('dev', {
+  skip: function (req, res) { return res.statusCode < 400 }
+})) */
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 const swaggerDocument = yaml.load('./swagger.yaml');
+
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'info.log'),{flags: 'a'})
+const errorAccessLogStream = fs.createWriteStream(path.join(__dirname, 'error.log'),{flags: 'a'})
+
+
+logger.token('type', function (req, res){
+  return req.headers['content-type']
+})
+
+app.use(logger(':method :url :status :res[content-length] - :response-time ms :date[web] :type', {skip: function (req, res) { return res.statusCode > 400 }, stream:accessLogStream}));
+app.use(logger(':method :url :status :res[content-length] - :response-time ms :date[web] :type' , {skip: function (req, res) { return res.statusCode < 400 }, stream:errorAccessLogStream}));
 
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
@@ -55,5 +78,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
 
 module.exports = app;

@@ -1,2 +1,7 @@
 GET /alu?cantAVer=123&paginaActual=1 500 1288 - 340.917 ms Mon, 16 Oct 2023 01:07:17 GMT -
 GET /alu?cantAVer=12&paginaActual=1 500 1288 - 361.805 ms Mon, 16 Oct 2023 01:08:35 GMT -
+POST /login 400 34 - 216.563 ms Wed, 18 Oct 2023 23:31:02 GMT application/json
+POST /login 400 34 - 118.714 ms Wed, 18 Oct 2023 23:31:19 GMT application/json
+POST /login 400 34 - 137.991 ms Wed, 18 Oct 2023 23:37:34 GMT application/json
+POST /login 404 31 - 8.062 ms Wed, 18 Oct 2023 23:37:42 GMT application/json
+GET /mat?cantAVer=12&paginaActual=12 500 1539 - 1285.403 ms Wed, 18 Oct 2023 23:40:13 GMT -

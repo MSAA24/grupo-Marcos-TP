@@ -2,6 +2,7 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+const bcrypt = require("bcrypt");
 const fs = require('fs');
 //logger
 var logger = require('morgan');
@@ -12,6 +13,7 @@ var alumnosRouter = require('./routes/alumnos');
 var materiasRouter = require('./routes/materias');
 var inscripcionesRouter = require('./routes/inscripciones');
 var tokenRouter = require('./routes/token');
+var usuarioRouter = require('./routes/usuarios');
 
 //swagger
 const swaggerUI = require("swagger-ui-express");
@@ -57,6 +59,7 @@ app.use(logger(':method :url :status :res[content-length] - :response-time ms :d
 
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
+app.use('/login', usuarioRouter);
 app.use('/car', carrerasRouter);
 app.use('/alu', alumnosRouter);
 app.use('/mat', materiasRouter);

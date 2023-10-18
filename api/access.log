@@ -1,0 +1,16 @@
+::ffff:127.0.0.1 - - [16/Oct/2023:00:41:57 +0000] "GET /api-docs/ HTTP/1.1" 304 -
+::ffff:127.0.0.1 - - [16/Oct/2023:00:41:57 +0000] "GET /api-docs/swagger-ui.css HTTP/1.1" 304 -
+::ffff:127.0.0.1 - - [16/Oct/2023:00:41:57 +0000] "GET /api-docs/swagger-ui-bundle.js HTTP/1.1" 304 -
+::ffff:127.0.0.1 - - [16/Oct/2023:00:41:57 +0000] "GET /api-docs/swagger-ui-standalone-preset.js HTTP/1.1" 304 -
+::ffff:127.0.0.1 - - [16/Oct/2023:00:41:57 +0000] "GET /api-docs/swagger-ui-init.js HTTP/1.1" 304 -
+::ffff:127.0.0.1 - - [16/Oct/2023:00:41:58 +0000] "GET /api-docs/favicon-16x16.png HTTP/1.1" - -
+::ffff:127.0.0.1 - - [16/Oct/2023:00:42:22 +0000] "POST /ins HTTP/1.1" 500 21
+::ffff:127.0.0.1 - - [16/Oct/2023:00:43:57 +0000] "POST /alu HTTP/1.1" 500 21
+::ffff:127.0.0.1 - - [16/Oct/2023:00:44:00 +0000] "POST /alu HTTP/1.1" 500 21
+::ffff:127.0.0.1 - - [16/Oct/2023:00:44:04 +0000] "POST /alu HTTP/1.1" 500 21
+::ffff:127.0.0.1 - - [16/Oct/2023:00:44:05 +0000] "POST /alu HTTP/1.1" 500 21
+::ffff:127.0.0.1 - - [16/Oct/2023:00:44:15 +0000] "POST /alu HTTP/1.1" 500 21
+::ffff:127.0.0.1 - - [16/Oct/2023:00:44:50 +0000] "GET /alu?cantAVer=100&paginaActual=1 HTTP/1.1" 500 21
+::ffff:127.0.0.1 - - [16/Oct/2023:00:45:17 +0000] "POST /alu HTTP/1.1" 500 21
+::ffff:127.0.0.1 - - [16/Oct/2023:00:49:01 +0000] "POST /alu HTTP/1.1" 201 8
+::ffff:127.0.0.1 - - [16/Oct/2023:00:49:07 +0000] "POST /alu HTTP/1.1" 201 8

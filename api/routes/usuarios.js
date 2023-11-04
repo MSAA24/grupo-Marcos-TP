@@ -10,36 +10,36 @@ const User = Models.usuario;
 dotenv.config();
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+router.get('/', function(req, res) {
+  res.send('respuesta');
 });
 
 
-router.post('/crear', async(req, res, next)=>{
+router.post('/crear', async(req, res)=>{
   const salt = await bcrypt.genSalt(10);
   var usr = {
     mail : req.body.mail,
     pass : await bcrypt.hash(req.body.pass, salt),
     id_alumno : req.body.id_alumno
   };
-  created_user = await User.create(usr);
-  res.status(201).json(created_user);
+  usuarioCreado = await User.create(usr);
+  res.status(201).json(usuarioCreado);
 });
 
 
-router.post('/',async(req,res,next)=>{
+router.post('/',async(req,res)=>{
     const user = await User.findOne({ where : {mail : req.body.mail }});
     if(user){
-       const password_valid = await bcrypt.compare(req.body.pass,user.pass);
-       if(password_valid){
+       const contraseniaValida = await bcrypt.compare(req.body.pass,user.pass);
+       if(contraseniaValida){
            token = jwt.sign({ "id" : user.id,"mail" : user.mail },process.env.JWT_SECRET_KEY);
            res.status(200).json({ token : token });
        } else {
-         res.status(400).json({ error : "contraseña incorrecta" });
+         res.status(400).json({ error : "Contraseña incorrecta" });
        }
      
      }else{
-       res.status(404).json({ error : "usuario inexistente" });
+       res.status(404).json({ error : "Usuario inexistente" });
      }
      
      });

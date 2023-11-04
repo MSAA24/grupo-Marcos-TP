@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
-const dotenv = require('dotenv');
 const jwt  = require('jsonwebtoken');
+const {verificarToken} = require("../controllers/tokenController");
 
 router.post("/generarToken", (req,res) => {
     let jwtSecretKey = process.env.JWT_SECRET_KEY;
@@ -14,13 +14,9 @@ router.post("/generarToken", (req,res) => {
 });
 
 router.get("/validarToken", (req,res) => {
-    let jwtSecretKey = process.env.JWT_SECRET_KEY;
-    let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
-
-    const token = req.header(tokenHeaderKey);
-    const verified = jwt.verify(token, jwtSecretKey);
     try {
-        if (verified) {
+        const tokenValido = verificarToken(req);
+        if (tokenValido) {
             return res.send("Verificado");
         }else {
             return res.status(401).send(error);

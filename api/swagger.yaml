@@ -81,6 +81,9 @@ components:
         id_materia: 1
 
 #tags
+tags: 
+  name: Usuarios
+  description: Manejo usuarios de la API
 tags:
   name: Alumnos
   description: Manejo Alumnos API
@@ -100,13 +103,55 @@ tags:
 tags: 
   name: Inscripciones
   description: Manejo Inscripciones API
-tags: 
-  name: Usuarios
-  description: Manejo usuarios de la API
+
 
 
 #paths
 paths:
+  #Usuario
+  /login/crear:
+    post:
+      tags: [Usuarios]
+      summary: Agrega un usuario.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mail:
+                  type: string
+                pass:
+                  type: string      
+                id_alumno:   
+                  type: integer
+      responses:
+        '200':
+          description: Solicitud exitosa
+        '400':
+          description: Error en la solicitud
+  /login:
+    post:
+      tags: [Usuarios]
+      summary: Busca un usuario.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mail:
+                  type: string
+                pass:
+                  type: string      
+      responses:
+        '200':
+          description: Solicitud exitosa
+        '400':
+          description: Error en la solicitud
+  #Token       
   /token/generarToken:
     post:
       tags: [Token]
@@ -665,46 +710,4 @@ paths:
         '400':
           description: Error en la solicitud
           
-  #Usuario
-  /login/crear:
-    post:
-      tags: [Usuarios]
-      summary: Agrega un usuario.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                mail:
-                  type: string
-                pass:
-                  type: string      
-                id_alumno:   
-                  type: integer
-      responses:
-        '200':
-          description: Solicitud exitosa
-        '400':
-          description: Error en la solicitud
-  /login:
-    post:
-      tags: [Usuarios]
-      summary: busca un usuario.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                mail:
-                  type: string
-                pass:
-                  type: string      
-      responses:
-        '200':
-          description: Solicitud exitosa
-        '400':
-          description: Error en la solicitud
+  

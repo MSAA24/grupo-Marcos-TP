@@ -5,3 +5,13 @@ POST /login 400 34 - 118.714 ms Wed, 18 Oct 2023 23:31:19 GMT application/json
 POST /login 400 34 - 137.991 ms Wed, 18 Oct 2023 23:37:34 GMT application/json
 POST /login 404 31 - 8.062 ms Wed, 18 Oct 2023 23:37:42 GMT application/json
 GET /mat?cantAVer=12&paginaActual=12 500 1539 - 1285.403 ms Wed, 18 Oct 2023 23:40:13 GMT -
+GET /alu?cantAVer=12&paginaActual=1 401 2 - 0.978 ms Sat, 04 Nov 2023 01:06:08 GMT -
+GET /alu?cantAVer=12&paginaActual=1 401 2 - 0.575 ms Sat, 04 Nov 2023 01:06:12 GMT -
+GET /mat?cantAVer=12&paginaActual=1 401 2 - 0.606 ms Sat, 04 Nov 2023 01:06:33 GMT -
+GET /mat?cantAVer=12&paginaActual=1 401 2 - 0.519 ms Sat, 04 Nov 2023 01:06:36 GMT -
+GET /mat?cantAVer=12&paginaActual=1 401 2 - 0.577 ms Sat, 04 Nov 2023 01:06:36 GMT -
+GET /car?cantAVer=12&paginaActual=1 401 2 - 0.772 ms Sat, 04 Nov 2023 01:06:45 GMT -
+GET /car?cantAVer=12&paginaActual=1 401 2 - 0.464 ms Sat, 04 Nov 2023 01:06:48 GMT -
+GET /ins?cantAVer=12&paginaActual=1 401 2 - 0.628 ms Sat, 04 Nov 2023 01:07:08 GMT -
+GET /ins?cantAVer=12&paginaActual=1 401 2 - 0.567 ms Sat, 04 Nov 2023 01:07:11 GMT -
+POST /login 404 31 - 14.482 ms Sat, 04 Nov 2023 01:13:11 GMT application/json

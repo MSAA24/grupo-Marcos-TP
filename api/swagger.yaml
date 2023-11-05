@@ -84,13 +84,15 @@ components:
 tags: 
   name: Usuarios
   description: Manejo usuarios de la API
+
 tags:
   name: Alumnos
   description: Manejo Alumnos API
 
-tags:
-  name: Token
-  description: Manejo Token API
+
+# tags:
+#   name: Token
+#   description: Manejo Token API
 
 tags:
   name: Carreras
@@ -151,40 +153,42 @@ paths:
           description: Solicitud exitosa
         '400':
           description: Error en la solicitud
-  #Token       
-  /token/generarToken:
-    post:
-      tags: [Token]
-      summary: Genera un token JWT.
-      description: Genera un token JWT con datos específicos.
-      produces:
-        - application/json
-      responses:
-        200:
-          description: Token JWT generado exitosamente.
-          schema:
-            type: string
-        500:
-          description: Error al generar el token JWT.
+  
+  #Token primera versión Token, reemplazada por Usuarios
+  # /token/generarToken:
+  #   post:
+  #     tags: [Token]
+  #     summary: Genera un token JWT.
+  #     description: Genera un token JWT con datos específicos.
+  #     produces:
+  #       - application/json
+  #     responses:
+  #       200:
+  #         description: Token JWT generado exitosamente.
+  #         schema:
+  #           type: string
+  #       500:
+  #         description: Error al generar el token JWT.
    
-  /token/validarToken:
-    get:
-      tags: [Token]
-      summary: Verifica un token JWT.
-      description: Verifica si un token JWT es válido.
-      parameters:
-        - in: header
-          default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE2OTcwNjMzOTZ9.IaqFEdDf6ITzbuq09h1Riile3pGAl3vnlbrA98WrPv4
-          name: token_key
-          description: El token JWT a verificar
-          required: true
-          type: string
+  # /token/validarToken:
+  #   get:
+  #     tags: [Token]
+  #     summary: Verifica un token JWT.
+  #     description: Verifica si un token JWT es válido.
+  #     parameters:
+  #       - in: header
+  #         default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE2OTcwNjMzOTZ9.IaqFEdDf6ITzbuq09h1Riile3pGAl3vnlbrA98WrPv4
+  #         name: token_key
+  #         description: El token JWT a verificar
+  #         required: true
+  #         type: string
         
-      responses:
-        200:
-          description: Token válido
-        401:
-          description: Token no válido
+  #     responses:
+  #       200:
+  #         description: Token válido
+  #       401:
+  #         description: Token no válido
+  
   #Alumnos
   /alu:
     get:

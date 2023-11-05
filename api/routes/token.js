@@ -3,6 +3,8 @@ var router = express.Router();
 const jwt  = require('jsonwebtoken');
 const {verificarToken} = require("../controllers/tokenController");
 
+//primera versión generación de Token
+
 router.post("/generarToken", (req,res) => {
     let jwtSecretKey = process.env.JWT_SECRET_KEY;
     let data = {
